@@ -4,7 +4,11 @@
 \alias{create_ensemble_average}
 \title{Create ensemble using mean or median average.}
 \usage{
-create_ensemble_average(forecasts, method = c("mean", "median"))
+create_ensemble_average(
+  forecasts,
+  method = c("mean", "median"),
+  model_name = NULL
+)
 }
 \arguments{
 \item{forecasts}{\code{data.frame} containing all the forecasts to be summarised
