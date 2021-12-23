@@ -15,6 +15,8 @@ create_ensemble_average(
 as an ensemble.}
 
 \item{method}{One of \code{mean} (default) or \code{median}.}
+
+\item{model_name}{character string for \code{model} column in output}
 }
 \value{
 ensemble model

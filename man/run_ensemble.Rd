@@ -17,8 +17,7 @@ run_ensemble(
   exclude_models = NULL,
   return_criteria = TRUE,
   verbose = FALSE,
-  exclude_designated_other = TRUE,
-  ...
+  exclude_designated_other = TRUE
 )
 }
 \arguments{
@@ -26,25 +25,27 @@ run_ensemble(
 
 \item{forecast_date}{date or character}
 
+\item{hub}{specification of hub}
+
 \item{data_processed_subpath}{hub-dependent, passed to load_forecasts}
 
 \item{criteria}{filtering criteria,}
 
-\item{quantiles}{}
+\item{quantiles}{numeric vector of quantiles}
 
-\item{locations}{}
+\item{locations}{character vector of locations to ensemble}
 
-\item{target_variables}{}
+\item{target_variables}{description of target_variables to include in ensemble}
 
-\item{horizons}{}
+\item{horizons}{numeric vector of horizons to include}
 
 \item{exclude_models}{data frame of submissions such as other ensembles to be excluded}
 
 \item{return_criteria}{return data frame with criteria passing info?}
 
-\item{verbose}{}
+\item{verbose}{boolean indicator of whether to print messages}
 
-\item{exclude_designated_other}{}
+\item{exclude_designated_other}{not sure what this is.}
 }
 \description{
 Run ensembling methods

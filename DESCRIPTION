@@ -18,3 +18,10 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Imports: 
+    covidHubUtils,
+    dplyr,
+    tidyr,
+    here,
+    lubridate
+Remotes: reichlab/covidHubUtils

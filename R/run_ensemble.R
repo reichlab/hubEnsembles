@@ -2,17 +2,17 @@
 #'
 #' @param method name of ensembling method
 #' @param forecast_date date or character
-#' @param hub
+#' @param hub specification of hub
 #' @param data_processed_subpath hub-dependent, passed to load_forecasts
-#' @param criteria filtering criteria, 
-#' @param quantiles 
-#' @param locations 
-#' @param target_variables 
-#' @param horizons 
+#' @param criteria filtering criteria,
+#' @param quantiles numeric vector of quantiles
+#' @param locations character vector of locations to ensemble
+#' @param target_variables description of target_variables to include in ensemble
+#' @param horizons numeric vector of horizons to include
 #' @param exclude_models data frame of submissions such as other ensembles to be excluded
 #' @param return_criteria return data frame with criteria passing info?
-#' @param verbose 
-#' @param exclude_designated_other
+#' @param verbose boolean indicator of whether to print messages
+#' @param exclude_designated_other not sure what this is.
 #'
 #' @details
 #' Used to create a single ensemble forecast.
@@ -40,8 +40,7 @@ run_ensemble <- function(
   exclude_models = NULL,
   return_criteria = TRUE,
   verbose = FALSE,
-  exclude_designated_other = TRUE,
-  ...) {
+  exclude_designated_other = TRUE) {
 
   # Dates ------------------------------------------------------------------
   # determine forecast dates matching the forecast date
@@ -100,7 +99,7 @@ run_ensemble <- function(
   # Averages
   if (method %in% c("mean", "median")) {
     ensemble <- create_ensemble_average(method = method,
-                                        forecasts = forecasts)  
+                                        forecasts = forecasts)
   }
 
   # Add other ensemble methods here as:
