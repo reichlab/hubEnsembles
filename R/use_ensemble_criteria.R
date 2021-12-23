@@ -4,6 +4,11 @@
 #' @param exclude_models optional character vector to exclude over all dates,
 #'   or data.frame with cols model and forecast_date, to exclude for specific
 #'    dates
+#' @param criteria something here
+#' @param quantiles something here
+#' @param locations something here
+#' @param target_variables something here
+#' @param horizons something here
 #' @param exclude_designated_other logical: whether to exclude models designated
 #' as "other" in their metadata file (default `TRUE`)
 #' @param return_criteria logical : whether to return a model/inclusion criteria
@@ -47,13 +52,13 @@ use_ensemble_criteria <- function(forecasts,
 
   criteria_df <- tidyr::expand_grid(
     model = unique(forecasts$model),
-    location = locations, 
-    target_variable = target_variables, 
+    location = locations,
+    target_variable = target_variables,
     horizon = horizons)
 
   if ("all_quantiles" %in% criteria | "all_quantiles_all_horizons" %in% criteria) {
   # Identify models with all quantiles
-    criteria_df <- criteria_df %>% 
+    criteria_df <- criteria_df %>%
     left_join(forecasts %>%
     # Check all quantiles per target/location
     group_by(model, target_variable, location, horizon) %>%
@@ -64,16 +69,16 @@ use_ensemble_criteria <- function(forecasts,
 
   if ("all_quantiles_all_horizons" %in% criteria) {
   # Identify models with all quantiles at all horizons
-    criteria_df <- criteria_df %>% 
-    group_by(model, target_variable, location) %>% 
+    criteria_df <- criteria_df %>%
+    group_by(model, target_variable, location) %>%
     mutate(all_quantiles_all_horizons = all(all_quantiles),
-      .groups = "drop") %>% 
+      .groups = "drop") %>%
     ungroup()
   }
 
   if ("all_horizons" %in% criteria) {
   # Identify models with forecasts of some quantiles at all horizons
-    criteria_df <- criteria_df %>% 
+    criteria_df <- criteria_df %>%
     left_join(forecasts %>%
     group_by(model, target_variable, location) %>%
     summarise(all_horizons =
@@ -92,14 +97,14 @@ use_ensemble_criteria <- function(forecasts,
   criteria_df <- criteria_df %>%
     mutate(not_excluded_manually = !(model %in% exclude_models))
 
-  criteria_df <- criteria_df %>% 
-  rowwise() %>% 
+  criteria_df <- criteria_df %>%
+  rowwise() %>%
   mutate(included_in_ensemble = all(c_across(-c(model, location, target_variable, horizon))))
 
   # Create an inclusion list
-  include <- criteria_df %>% 
+  include <- criteria_df %>%
   filter(included_in_ensemble = TRUE) %>%
-  select(model, target_variable, location, horizon) 
+  select(model, target_variable, location, horizon)
 
   # Return
   forecasts <- inner_join(forecasts, include,

@@ -17,8 +17,7 @@ run_ensemble(
   exclude_models = NULL,
   return_criteria = TRUE,
   verbose = FALSE,
-  exclude_designated_other = TRUE,
-  ...
+  exclude_designated_other = TRUE
 )
 }
 \arguments{

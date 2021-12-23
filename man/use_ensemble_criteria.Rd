@@ -24,6 +24,16 @@ as an ensemble.}
 or data.frame with cols model and forecast_date, to exclude for specific
 dates}
 
+\item{criteria}{something here}
+
+\item{quantiles}{something here}
+
+\item{locations}{something here}
+
+\item{target_variables}{something here}
+
+\item{horizons}{something here}
+
 \item{exclude_designated_other}{logical: whether to exclude models designated
 as "other" in their metadata file (default \code{TRUE})}
 
