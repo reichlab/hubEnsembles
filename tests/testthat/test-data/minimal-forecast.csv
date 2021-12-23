@@ -1,0 +1,8 @@
+model,forecast_date,location,horizon,temporal_resolution,target_variable,target_end_date,type,quantile,value
+COVIDhub-ensemble,2021-12-20,US,1,wk,inc case,2021-12-25,quantile,0.025,707091
+COVIDhub-ensemble,2021-12-20,US,1,wk,inc case,2021-12-25,quantile,0.1,759651
+COVIDhub-ensemble,2021-12-20,US,1,wk,inc case,2021-12-25,quantile,0.25,843156
+COVIDhub-ensemble,2021-12-20,US,1,wk,inc case,2021-12-25,quantile,0.5,897214
+COVIDhub-ensemble,2021-12-20,US,1,wk,inc case,2021-12-25,quantile,0.75,987674
+COVIDhub-ensemble,2021-12-20,US,1,wk,inc case,2021-12-25,quantile,0.9,1074530
+COVIDhub-ensemble,2021-12-20,US,1,wk,inc case,2021-12-25,quantile,0.975,1151706
