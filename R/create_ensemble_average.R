@@ -3,7 +3,7 @@
 #' @param forecasts `data.frame` containing all the forecasts to be summarised
 #' as an ensemble.
 #' @param method One of `mean` (default) or `median`.
-#' @model_name character string for `model` column in output
+#' @param model_name character string for `model` column in output
 #'
 #' @return ensemble model
 #'
