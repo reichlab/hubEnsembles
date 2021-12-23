@@ -40,8 +40,7 @@ run_ensemble <- function(
   exclude_models = NULL,
   return_criteria = TRUE,
   verbose = FALSE,
-  exclude_designated_other = TRUE,
-  ...) {
+  exclude_designated_other = TRUE) {
 
   # Dates ------------------------------------------------------------------
   # determine forecast dates matching the forecast date
