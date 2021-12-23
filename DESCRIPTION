@@ -20,5 +20,8 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Imports: 
-    covidHubUtils
+    covidHubUtils,
+    dplyr,
+    here,
+    lubridate
 Remotes: reichlab/covidHubUtils
