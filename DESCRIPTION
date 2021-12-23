@@ -18,3 +18,9 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Imports: 
+    covidHubUtils,
+    dplyr,
+    tidyr,
+    lubridate
+Remotes: reichlab/covidHubUtils
