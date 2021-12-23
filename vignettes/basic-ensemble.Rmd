@@ -46,7 +46,8 @@ truth_data <- load_truth(
   truth_source = "JHU", 
   target_variable = "inc death", 
   locations = unique(forecast_data$location)
-  )
+  ) %>%
+  dplyr::filter(target_end_date >= as.Date("2021-10-01"))
 
 plot_forecasts(
   forecast_data = forecast_data,
@@ -64,8 +65,11 @@ plot_forecasts(
 And we can build a simple average ensemble of all the models
 
 ```{r}
-ensemble_forecast <- create_ensemble_average(forecast_data, method = "median")
-ensemble_forecast$model <- "myTeam-ensemble"
+ensemble_forecast <- create_ensemble_average(
+  forecast_data, 
+  method = "median", 
+  model_name = "myTeam-ensemble") %>%
+  left_join(hub_locations, by=c("location" = "fips"))
 ```
 
 ```{r}
@@ -74,7 +78,8 @@ plot_forecasts(
   facet = .~location,
   facet_scales = "free_y",
   truth_data = truth_data,
-  truth_source = "JHU"
+  truth_source = "JHU", 
+  use_median_as_point = TRUE
   )
 ```
 
