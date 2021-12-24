@@ -3,6 +3,7 @@
 export(build_quantile_ensemble)
 importFrom(dplyr,"%>%")
 importFrom(dplyr,group_by)
+importFrom(dplyr,left_join)
 importFrom(dplyr,n)
 importFrom(dplyr,summarise)
 importFrom(stats,median)

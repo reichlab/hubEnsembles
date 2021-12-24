@@ -9,7 +9,8 @@ build_quantile_ensemble(
   method = c("median", "mean"),
   model_name,
   forecast_date,
-  location_data = NULL
+  location_data = NULL,
+  location_col_name = "fips"
 )
 }
 \arguments{
@@ -18,11 +19,17 @@ as an ensemble.}
 
 \item{method}{One of \code{median} (default) or \code{mean}.}
 
-\item{model_name}{character string for \code{model} column in output}
+\item{model_name}{character string for \code{model} column in output; if NULL no such column will be added}
 
-\item{forecast_date}{a character string interpretable as a date}
+\item{forecast_date}{character string interpretable as a date which will populate the forecast_date column of
+the ensemble data frame}
 
-\item{location_data}{am optional data.frame with metadata about location}
+\item{location_data}{an optional data.frame with metadata about location. If present it will be left joined
+with the ensemble data frame on the column \code{location_col_name}. This is useful when passing the ensemble to
+\code{plot_forecasts} which requires full location names.}
+
+\item{location_col_name}{character string giving the column name in \code{location_data} matching
+with the \code{location} column in \code{forecast_data}. Defaults to "fips".}
 }
 \value{
 ensemble model

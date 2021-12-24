@@ -5,8 +5,10 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Simple ensemble build}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
@@ -23,6 +25,7 @@ This vignette attempts to provide a minimal working example for building an ense
 ```{r}
 library(covidHubUtils)
 library(hubEnsembles)
+library(dplyr)
 ```
 
 
@@ -31,8 +34,9 @@ library(hubEnsembles)
 We start by loading some forecasts of weekly incident deaths from selected models. Note that these forecasts are retrieved from the US COVID-19 Forecast Hub data stored in the [Zoltar database](https://zoltardata.com/project/44) (the default specifications for the `load_forecasts()` function. 
 
 ```{r}
+models = c("UMass-MechBayes", "USC-SI_kJalpha", "MOBS-GLEAM_COVID", "JHU_CSSE-DECOM", "CU-select", "BPagano-RtDriven")
 forecast_data <- load_forecasts(
-  models = c("UMass-MechBayes", "USC-SI_kJalpha", "MOBS-GLEAM_COVID", "JHU_CSSE-DECOM", "CU-select", "BPagano-RtDriven"),
+  models = models,
   targets = c(paste(1:4, "wk ahead inc death")),
   dates = "2021-12-20",
   date_window_size = 6,
@@ -52,7 +56,7 @@ plot_forecasts(
   forecast_data = forecast_data,
   facet = model~location,
   facet_scales = "free_y",
-  truth_data = truth_data,
+  truth_data = truth_data %>% filter(target_end_date > "2021-06-01"),
   truth_source = "JHU"
   )
 ```
@@ -60,19 +64,23 @@ plot_forecasts(
 
 ## Build ensemble
 
-And we can build a simple average ensemble of all the models
+Next we build a simple average ensemble of all the models
 
 ```{r}
-ensemble_forecast <- create_ensemble_average(forecast_data, method = "median")
-ensemble_forecast$model <- "myTeam-ensemble"
+ensemble_forecast <- build_quantile_ensemble(forecast_data, 
+                                             method = "median",
+                                             forecast_date = "2021-12-20",
+                                             model_name = "myTeam-ensemble",
+                                             location_data = hub_locations)
 ```
-
+ 
+and plot it 
 ```{r}
 plot_forecasts(
   forecast_data = ensemble_forecast,
   facet = .~location,
   facet_scales = "free_y",
-  truth_data = truth_data,
+  truth_data = truth_data %>% filter(target_end_date > "2021-06-01"),
   truth_source = "JHU"
   )
 ```
