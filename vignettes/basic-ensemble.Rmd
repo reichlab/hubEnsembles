@@ -45,7 +45,7 @@ forecast_data <- load_forecasts(
 ```
 
 We can plot these forecasts individually. If you are going to be making multiple forecast plots, it can speed things up to download truth data first.
-```{r}
+```{r, fig.width=8, fig.height=4}
 truth_data <- load_truth(
   truth_source = "JHU", 
   target_variable = "inc death", 
@@ -54,11 +54,15 @@ truth_data <- load_truth(
 
 plot_forecasts(
   forecast_data = forecast_data,
-  facet = model~location,
+  facet = .~location,
   facet_scales = "free_y",
   truth_data = truth_data %>% filter(target_end_date > "2021-06-01"),
-  truth_source = "JHU"
-  )
+  truth_source = "JHU",
+  use_median_as_point = TRUE, 
+  fill_by_model = TRUE, 
+  show_caption = FALSE, 
+  fill_transparency = .3
+  ) 
 ```
 
 
@@ -75,13 +79,14 @@ ensemble_forecast <- build_quantile_ensemble(forecast_data,
 ```
  
 and plot it 
-```{r}
+```{r, fig.width=8, fig.height=4}
 plot_forecasts(
   forecast_data = ensemble_forecast,
   facet = .~location,
   facet_scales = "free_y",
   truth_data = truth_data %>% filter(target_end_date > "2021-06-01"),
-  truth_source = "JHU"
+  truth_source = "JHU", 
+  use_median_as_point = TRUE
   )
 ```
 
