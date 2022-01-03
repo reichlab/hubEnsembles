@@ -54,6 +54,11 @@ build_quantile_ensemble <- function(
   ensemble$forecast_date <- as.Date(forecast_date)
 
   if (!is.null(location_data)) {
+  # warn if if there are any locations in the ensemble are not in location_data 
+    mslocs <- setdiff(ensemble$location, location_data[[location_col_name]]) 
+    if (length(mslocs) > 0) {
+      warning(paste("Locations not present in location_data:", mslocs))
+    }
     ensemble <- ensemble %>% 
     left_join(
       location_data,
