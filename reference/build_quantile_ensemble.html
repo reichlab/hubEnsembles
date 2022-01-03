@@ -25,6 +25,16 @@
       <ul class="nav navbar-nav"><li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu"><li>
+      <a href="../articles/basic-ensemble.html">Simple ensemble build</a>
+    </li>
+  </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"></ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -49,7 +59,8 @@
   method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span>, <span class="st">"mean"</span><span class="op">)</span>,
   <span class="va">model_name</span>,
   <span class="va">forecast_date</span>,
-  location_data <span class="op">=</span> <span class="cn">NULL</span>
+  location_data <span class="op">=</span> <span class="cn">NULL</span>,
+  location_col_name <span class="op">=</span> <span class="st">"fips"</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -61,11 +72,17 @@ as an ensemble.</p></dd>
 <dt>method</dt>
 <dd><p>One of <code>median</code> (default) or <code>mean</code>.</p></dd>
 <dt>model_name</dt>
-<dd><p>character string for <code>model</code> column in output</p></dd>
+<dd><p>character string for <code>model</code> column in output; if NULL no such column will be added</p></dd>
 <dt>forecast_date</dt>
-<dd><p>a character string interpretable as a date</p></dd>
+<dd><p>character string interpretable as a date which will populate the forecast_date column of
+the ensemble data frame</p></dd>
 <dt>location_data</dt>
-<dd><p>am optional data.frame with metadata about location</p></dd>
+<dd><p>an optional data.frame with metadata about location. If present it will be left joined
+with the ensemble data frame on the column <code>location_col_name</code>. This is useful when passing the ensemble to
+<code>plot_forecasts</code> which requires full location names.</p></dd>
+<dt>location_col_name</dt>
+<dd><p>character string giving the column name in <code>location_data</code> matching
+with the <code>location</code> column in <code>forecast_data</code>. Defaults to "fips".</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
