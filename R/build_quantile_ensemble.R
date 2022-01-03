@@ -3,13 +3,17 @@
 #' @param forecast_data `data.frame` containing all the forecasts to be summarised
 #' as an ensemble.
 #' @param method One of `median` (default) or `mean`.
-#' @param model_name character string for `model` column in output
-#' @param forecast_date a character string interpretable as a date
-#' @param location_data am optional data.frame with metadata about location
-#'
+#' @param model_name character string for `model` column in output; if NULL no such column will be added
+#' @param forecast_date character string interpretable as a date which will populate the forecast_date column of
+#' the ensemble data frame 
+#' @param location_data an optional data.frame with metadata about location. If present it will be left joined
+#' with the ensemble data frame on the column `location_col_name`. This is useful when passing the ensemble to
+#' `plot_forecasts` which requires full location names.
+#' @param location_col_name character string giving the column name in `location_data` matching
+#' with the `location` column in `forecast_data`. Defaults to "fips".
 #' @return ensemble model
 #'
-#' @importFrom dplyr group_by %>% summarise n
+#' @importFrom dplyr group_by %>% summarise n left_join
 #' @importFrom stats median
 #'
 #' @export
@@ -19,8 +23,49 @@ build_quantile_ensemble <- function(
   method = c("median", "mean"),
   model_name,
   forecast_date,
-  location_data = NULL
+  location_data = NULL,
+  location_col_name = "fips"
 ) {
   method <- match.arg(method)
+
+    # Mean
+  if (method == "mean") {
+    ensemble <- forecast_data %>%
+    group_by(location, horizon, temporal_resolution, 
+      target_variable, target_end_date, type, quantile) %>%
+    summarise(forecast_count = n(),
+      value = mean(value),
+      .groups = "drop")
+    # Median
+  } else if (method == "median") {
+    ensemble <- forecast_data %>%
+    group_by(location, horizon, temporal_resolution, 
+      target_variable, target_end_date, type, quantile) %>%
+    summarise(forecast_count = n(),
+      value = median(value),
+      .groups = "drop")
+  }
+
+  # add model name column
+  if(!is.null(model_name))
+    ensemble$model <- model_name
+
+  # add forecast date to ensemble
+  ensemble$forecast_date <- as.Date(forecast_date)
+
+  if (!is.null(location_data)) {
+  # warn if if there are any locations in the ensemble are not in location_data 
+    mslocs <- setdiff(ensemble$location, location_data[[location_col_name]]) 
+    if (length(mslocs) > 0) {
+      warning(paste("Locations not present in location_data:", mslocs))
+    }
+    ensemble <- ensemble %>% 
+    left_join(
+      location_data,
+      by = c("location" = location_col_name))
+  }
+
+  # Return ensemble
+  return(ensemble)
 
 }
