@@ -26,7 +26,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -54,14 +54,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">build_quantile_ensemble</span><span class="op">(</span>
-  <span class="va">forecast_data</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span>, <span class="st">"mean"</span><span class="op">)</span>,
-  <span class="va">model_name</span>,
-  <span class="va">forecast_date</span>,
-  location_data <span class="op">=</span> <span class="cn">NULL</span>,
-  location_col_name <span class="op">=</span> <span class="st">"fips"</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">build_quantile_ensemble</span><span class="op">(</span></span>
+<span>  <span class="va">forecast_data</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span>, <span class="st">"mean"</span><span class="op">)</span>,</span>
+<span>  <span class="va">model_name</span>,</span>
+<span>  <span class="va">forecast_date</span>,</span>
+<span>  location_data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  location_col_name <span class="op">=</span> <span class="st">"fips"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,24 +69,37 @@
     <dl><dt>forecast_data</dt>
 <dd><p><code>data.frame</code> containing all the forecasts to be summarised
 as an ensemble.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>One of <code>median</code> (default) or <code>mean</code>.</p></dd>
+
+
 <dt>model_name</dt>
 <dd><p>character string for <code>model</code> column in output; if NULL no such column will be added</p></dd>
+
+
 <dt>forecast_date</dt>
 <dd><p>character string interpretable as a date which will populate the forecast_date column of
 the ensemble data frame</p></dd>
+
+
 <dt>location_data</dt>
 <dd><p>an optional data.frame with metadata about location. If present it will be left joined
 with the ensemble data frame on the column <code>location_col_name</code>. This is useful when passing the ensemble to
 <code>plot_forecasts</code> which requires full location names.</p></dd>
+
+
 <dt>location_col_name</dt>
 <dd><p>character string giving the column name in <code>location_data</code> matching
 with the <code>location</code> column in <code>forecast_data</code>. Defaults to "fips".</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>ensemble model</p>
+    
+
+<p>ensemble model</p>
     </div>
 
   </div>
@@ -101,7 +114,7 @@ with the <code>location</code> column in <code>forecast_data</code>. Defaults to
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

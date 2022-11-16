@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -71,7 +71,7 @@
       <h1 data-toc-skip>Simple ensemble build</h1>
                         <h4 data-toc-skip class="author">Nicholas G Reich</h4>
             
-            <h4 data-toc-skip class="date">2022-01-03</h4>
+            <h4 data-toc-skip class="date">2022-11-16</h4>
       
       
       <div class="hidden name"><code>basic-ensemble.Rmd</code></div>
@@ -82,41 +82,41 @@
     
 <p>This vignette attempts to provide a minimal working example for building an ensemble using the <code>covidHubUtils</code> and <code>hubEnsembles</code> packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/reichlab/covidHubUtils" class="external-link">covidHubUtils</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hubEnsembles</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/reichlab/covidHubUtils" class="external-link">covidHubUtils</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hubEnsembles</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="loading-forecasts">Loading forecasts<a class="anchor" aria-label="anchor" href="#loading-forecasts"></a>
 </h2>
 <p>We start by loading some forecasts of weekly incident deaths from selected models. Note that these forecasts are retrieved from the US COVID-19 Forecast Hub data stored in the <a href="https://zoltardata.com/project/44" class="external-link">Zoltar database</a> (the default specifications for the <code><a href="https://rdrr.io/pkg/covidHubUtils/man/load_forecasts.html" class="external-link">load_forecasts()</a></code> function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">models</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UMass-MechBayes"</span>, <span class="st">"USC-SI_kJalpha"</span>, <span class="st">"MOBS-GLEAM_COVID"</span>, <span class="st">"JHU_CSSE-DECOM"</span>, <span class="st">"CU-select"</span>, <span class="st">"BPagano-RtDriven"</span><span class="op">)</span>
-<span class="va">forecast_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/load_forecasts.html" class="external-link">load_forecasts</a></span><span class="op">(</span>
-  models <span class="op">=</span> <span class="va">models</span>,
-  targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="st">"wk ahead inc death"</span><span class="op">)</span><span class="op">)</span>,
-  dates <span class="op">=</span> <span class="st">"2021-12-20"</span>,
-  date_window_size <span class="op">=</span> <span class="fl">6</span>,
-  locations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>, <span class="st">"06"</span><span class="op">)</span>,
-  types <span class="op">=</span> <span class="st">"quantile"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">models</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UMass-MechBayes"</span>, <span class="st">"USC-SI_kJalpha"</span>, <span class="st">"MOBS-GLEAM_COVID"</span>, <span class="st">"JHU_CSSE-DECOM"</span>, <span class="st">"CU-select"</span>, <span class="st">"BPagano-RtDriven"</span><span class="op">)</span></span>
+<span><span class="va">forecast_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/load_forecasts.html" class="external-link">load_forecasts</a></span><span class="op">(</span></span>
+<span>  models <span class="op">=</span> <span class="va">models</span>,</span>
+<span>  targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="st">"wk ahead inc death"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  dates <span class="op">=</span> <span class="st">"2021-12-20"</span>,</span>
+<span>  date_window_size <span class="op">=</span> <span class="fl">6</span>,</span>
+<span>  locations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"US"</span>, <span class="st">"06"</span><span class="op">)</span>,</span>
+<span>  types <span class="op">=</span> <span class="st">"quantile"</span><span class="op">)</span></span></code></pre></div>
 <p>We can plot these forecasts individually. If you are going to be making multiple forecast plots, it can speed things up to download truth data first.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">truth_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/load_truth.html" class="external-link">load_truth</a></span><span class="op">(</span>
-  truth_source <span class="op">=</span> <span class="st">"JHU"</span>, 
-  target_variable <span class="op">=</span> <span class="st">"inc death"</span>, 
-  locations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">forecast_data</span><span class="op">$</span><span class="va">location</span><span class="op">)</span>
-  <span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/plot_forecasts.html" class="external-link">plot_forecasts</a></span><span class="op">(</span>
-  forecast_data <span class="op">=</span> <span class="va">forecast_data</span>,
-  facet <span class="op">=</span> <span class="va">.</span><span class="op">~</span><span class="va">location</span>,
-  facet_scales <span class="op">=</span> <span class="st">"free_y"</span>,
-  truth_data <span class="op">=</span> <span class="va">truth_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">target_end_date</span> <span class="op">&gt;</span> <span class="st">"2021-06-01"</span><span class="op">)</span>,
-  truth_source <span class="op">=</span> <span class="st">"JHU"</span>,
-  use_median_as_point <span class="op">=</span> <span class="cn">TRUE</span>, 
-  fill_by_model <span class="op">=</span> <span class="cn">TRUE</span>, 
-  show_caption <span class="op">=</span> <span class="cn">FALSE</span>, 
-  fill_transparency <span class="op">=</span> <span class="fl">.3</span>
-  <span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span><span class="va">truth_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/load_truth.html" class="external-link">load_truth</a></span><span class="op">(</span></span>
+<span>  truth_source <span class="op">=</span> <span class="st">"JHU"</span>, </span>
+<span>  target_variable <span class="op">=</span> <span class="st">"inc death"</span>, </span>
+<span>  locations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">forecast_data</span><span class="op">$</span><span class="va">location</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/plot_forecasts.html" class="external-link">plot_forecasts</a></span><span class="op">(</span></span>
+<span>  forecast_data <span class="op">=</span> <span class="va">forecast_data</span>,</span>
+<span>  facet <span class="op">=</span> <span class="va">.</span><span class="op">~</span><span class="va">location</span>,</span>
+<span>  facet_scales <span class="op">=</span> <span class="st">"free_y"</span>,</span>
+<span>  truth_data <span class="op">=</span> <span class="va">truth_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">target_end_date</span> <span class="op">&gt;</span> <span class="st">"2021-06-01"</span><span class="op">)</span>,</span>
+<span>  truth_source <span class="op">=</span> <span class="st">"JHU"</span>,</span>
+<span>  use_median_as_point <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>  fill_by_model <span class="op">=</span> <span class="cn">TRUE</span>, </span>
+<span>  show_caption <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span>  fill_transparency <span class="op">=</span> <span class="fl">.3</span></span>
+<span>  <span class="op">)</span> </span></code></pre></div>
 <p><img src="basic-ensemble_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
 </div>
 <div class="section level2">
@@ -124,21 +124,21 @@
 </h2>
 <p>Next we build a simple average ensemble of all the models</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ensemble_forecast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_quantile_ensemble.html">build_quantile_ensemble</a></span><span class="op">(</span><span class="va">forecast_data</span>, 
-                                             method <span class="op">=</span> <span class="st">"median"</span>,
-                                             forecast_date <span class="op">=</span> <span class="st">"2021-12-20"</span>,
-                                             model_name <span class="op">=</span> <span class="st">"myTeam-ensemble"</span>,
-                                             location_data <span class="op">=</span> <span class="va">hub_locations</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ensemble_forecast</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_quantile_ensemble.html">build_quantile_ensemble</a></span><span class="op">(</span><span class="va">forecast_data</span>, </span>
+<span>                                             method <span class="op">=</span> <span class="st">"median"</span>,</span>
+<span>                                             forecast_date <span class="op">=</span> <span class="st">"2021-12-20"</span>,</span>
+<span>                                             model_name <span class="op">=</span> <span class="st">"myTeam-ensemble"</span>,</span>
+<span>                                             location_data <span class="op">=</span> <span class="va">hub_locations</span><span class="op">)</span></span></code></pre></div>
 <p>and plot it</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/plot_forecasts.html" class="external-link">plot_forecasts</a></span><span class="op">(</span>
-  forecast_data <span class="op">=</span> <span class="va">ensemble_forecast</span>,
-  facet <span class="op">=</span> <span class="va">.</span><span class="op">~</span><span class="va">location</span>,
-  facet_scales <span class="op">=</span> <span class="st">"free_y"</span>,
-  truth_data <span class="op">=</span> <span class="va">truth_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">target_end_date</span> <span class="op">&gt;</span> <span class="st">"2021-06-01"</span><span class="op">)</span>,
-  truth_source <span class="op">=</span> <span class="st">"JHU"</span>, 
-  use_median_as_point <span class="op">=</span> <span class="cn">TRUE</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/covidHubUtils/man/plot_forecasts.html" class="external-link">plot_forecasts</a></span><span class="op">(</span></span>
+<span>  forecast_data <span class="op">=</span> <span class="va">ensemble_forecast</span>,</span>
+<span>  facet <span class="op">=</span> <span class="va">.</span><span class="op">~</span><span class="va">location</span>,</span>
+<span>  facet_scales <span class="op">=</span> <span class="st">"free_y"</span>,</span>
+<span>  truth_data <span class="op">=</span> <span class="va">truth_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">target_end_date</span> <span class="op">&gt;</span> <span class="st">"2021-06-01"</span><span class="op">)</span>,</span>
+<span>  truth_source <span class="op">=</span> <span class="st">"JHU"</span>, </span>
+<span>  use_median_as_point <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="basic-ensemble_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
 </div>
   </div>
@@ -160,7 +160,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
