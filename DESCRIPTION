@@ -23,4 +23,5 @@ Imports:
     dplyr,
     tidyr,
     lubridate
+    matrixStats
 Remotes: reichlab/covidHubUtils

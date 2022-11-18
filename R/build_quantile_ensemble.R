@@ -18,6 +18,7 @@
 #'
 #' @importFrom dplyr group_by %>% summarise n left_join
 #' @importFrom stats median
+#' @importFrom matrixStats weightedMedian weightedMean
 #'
 #' @export
 
@@ -30,7 +31,6 @@ build_quantile_ensemble <- function(
   location_data = NULL,
   location_col_name = "fips"
 ) {
-  library(matrixStats)
   method <- match.arg(method)
 
   if ((length(weights_df) != 0) && all(names(weights_df) != c("model", "weight"))) {
