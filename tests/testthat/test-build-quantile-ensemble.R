@@ -1,5 +1,6 @@
 context("build_quantile_ensemble")
 library(hubEnsembles)
+library(matrixStats)
 
 tmp_dat <- readr::read_csv("test-data/minimal-forecast.csv")
 
@@ -30,16 +31,26 @@ test_that("medians and means correctly calculated", {
   fdat$value[fdat$location == "888" & fdat$quantile == .5] <- v8.5 <- c(150, 325, 500, 300)
   fdat$value[fdat$location == "888" & fdat$quantile == .9] <- v8.9 <- c(250, 350, 500, 350)
 
-  med_vals <- sapply(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), median)
+  median_vals <- sapply(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), median)
   mean_vals <- sapply(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), mean)
 
+  fweight <- tibble(model = letters[1:4], weight = 0.1*(1:4))
+
+  weighted_median_vals <- map(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), weightedMedian, w = fweight$weight)
+  weighted_mean_vals <- map(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), weightedMean, w = fweight$weight)
+
   median_actual <- build_quantile_ensemble(
-    forecast_data = fdat, method = "median", model_name = "med_ens", forecast_date = "2021-12-20")
-
+    forecast_data = fdat, weights_df = NULL, method = "median", model_name = "median_ens", forecast_date = "2021-12-20")
   mean_actual <- build_quantile_ensemble(
-    forecast_data = fdat, method = "mean", model_name = "mean_ens", forecast_date = "2021-12-20")
+    forecast_data = fdat, weights_df = NULL, method = "mean", model_name = "mean_ens", forecast_date = "2021-12-20")
+    
+  weighted_median_actual <- build_quantile_ensemble(
+    forecast_data = fdat, weights_df = fweight, method = "median", model_name = "weighted_median_ens", forecast_date = "2021-12-20")
+  weighted_mean_actual <- build_quantile_ensemble(
+    forecast_data = fdat, weights_df = fweight, method = "mean", model_name = "weighted_mean_ens", forecast_date = "2021-12-20")
 
-  median_expected <- mean_expected <- tibble::tibble(
+
+  median_expected <- mean_expected <- weighted_median_expected <- weighted_mean_expected <- tibble::tibble(
     location = rep(c("222", "888"), each = 3), 
     horizon = 1, 
     temporal_resolution = "wk", 
@@ -53,11 +64,18 @@ test_that("medians and means correctly calculated", {
     forecast_date = as.Date("2021-12-20"))
 
   median_expected$value <- sapply(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), median)
-  median_expected$model <- "med_ens"
+  median_expected$model <- "median_ens"
   mean_expected$value <- sapply(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), mean)
   mean_expected$model <- "mean_ens"
 
-  expect_equal(median_actual, median_expected)
+  weighted_mean_expected$value <- map_dbl(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), weightedMean, w = fweight$weight)
+  weighted_mean_expected$model <- "weighted_mean_ens"
+  weighted_median_expected$value <- map_dbl(list(v2.1, v2.5, v2.9, v8.1, v8.5, v8.9), weightedMedian, w = fweight$weight)
+  weighted_median_expected$model <- "weighted_median_ens"
 
+  expect_equal(median_actual, median_expected)
   expect_equal(mean_actual, mean_expected)
+  
+  expect_equal(weighted_median_actual, weighted_median_expected)
+  expect_equal(weighted_mean_actual, weighted_mean_expected)
 })

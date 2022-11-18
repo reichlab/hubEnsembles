@@ -2,10 +2,11 @@
 % Please edit documentation in R/build_quantile_ensemble.R
 \name{build_quantile_ensemble}
 \alias{build_quantile_ensemble}
-\title{Create quantile ensemble using mean or median}
+\title{Create quantile (weighted or unweighted) ensemble using mean or median}
 \usage{
 build_quantile_ensemble(
   forecast_data,
+  weights_df = NULL,
   method = c("median", "mean"),
   model_name,
   forecast_date,
@@ -16,6 +17,10 @@ build_quantile_ensemble(
 \arguments{
 \item{forecast_data}{\code{data.frame} containing all the forecasts to be summarised
 as an ensemble.}
+
+\item{weights_df}{\code{data.frame} containing weights for all the models included in \code{forecast_data}
+to create a weighted ensemble, should include a \code{model} column and \code{weight} column.
+Defaults to NULL, which creates an unweighted ensemble.}
 
 \item{method}{One of \code{median} (default) or \code{mean}.}
 
@@ -35,5 +40,5 @@ with the \code{location} column in \code{forecast_data}. Defaults to "fips".}
 ensemble model
 }
 \description{
-Create quantile ensemble using mean or median
+Create quantile (weighted or unweighted) ensemble using mean or median
 }
